@@ -1,13 +1,13 @@
 package com.company.demo.controller;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.company.demo.dto.StudentDto;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/param")
 public class DataCatchingMethods {
 
     //this is Query parameter request method
@@ -32,5 +32,28 @@ public class DataCatchingMethods {
         System.out.println(address);
         return "ok";
 
+    }
+
+    @PostMapping("/body")
+    public String bodyCheck(@RequestBody StudentDto studentDto){
+        System.out.println("===========================");
+        System.out.println("Id: " + studentDto.getId());
+        System.out.println("Name: " + studentDto.getName());
+        System.out.println("Address: "+studentDto.getAddress());
+        System.out.println("Age: "+ studentDto.getAge());
+        System.out.println("===========================");
+        return "ok";
+
+    }    @PostMapping("/body_arr")
+    public String bodyCheckArr(@RequestBody ArrayList<StudentDto> studentDtoList){
+        for(StudentDto studentDto : studentDtoList){
+            System.out.println("===========================");
+            System.out.println("Id: " + studentDto.getId());
+            System.out.println("Name: " + studentDto.getName());
+            System.out.println("Address: "+studentDto.getAddress());
+            System.out.println("Age: "+ studentDto.getAge());
+            System.out.println("===========================");
+        }
+        return "ok";
     }
 }
