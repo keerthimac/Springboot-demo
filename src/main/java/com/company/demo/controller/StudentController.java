@@ -1,9 +1,8 @@
 package com.company.demo.controller;
 
 import com.company.demo.dto.StudentDto;
-import com.company.demo.service.StudentService;
+import com.company.demo.service.impl.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,9 +12,9 @@ import java.util.Optional;
 @RequestMapping("/student")
 public class StudentController {
 
-    StudentService service;
+    StudentServiceImpl service;
 
-    public StudentController(StudentService service) {
+    public StudentController(StudentServiceImpl service) {
         this.service = service;
     }
 
@@ -30,27 +29,27 @@ public class StudentController {
 
     @GetMapping(value ="/{id}")
     public ResponseEntity<StudentDto> getStudent(@PathVariable int id){
-        Optional<StudentDto> studentDto = service.get(id);
-        if(studentDto.isEmpty()){
+        StudentDto studentDto = service.get(id);
+        if(studentDto==null){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(studentDto.get());
+        return ResponseEntity.ok(studentDto);
     }
 
     @PostMapping(consumes = "application/json")
-    public ResponseEntity<String>saveStudent(@RequestBody StudentDto studentDto) {
-        boolean save = service.save(studentDto);
-        if(save){
-            return ResponseEntity.ok("Student Saved");
+    public ResponseEntity saveStudent(@RequestBody StudentDto studentDto) {
+        StudentDto saved = service.save(studentDto);
+        if(saved!=null){
+            return ResponseEntity.ok(saved);
         }
         return ResponseEntity.badRequest().body("Student Not Saved");
     }
 
     @PutMapping(consumes = "application/json")
     public ResponseEntity updateStudent(@RequestBody StudentDto studentDto){
-        boolean update = service.update(studentDto);
-        if(update){
-            return ResponseEntity.ok("Student Updated");
+        StudentDto updated = service.update(studentDto);
+        if(updated!=null){
+            return ResponseEntity.ok(updated);
         }
         return ResponseEntity.badRequest().build();
     }
